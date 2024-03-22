@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class Booking {
+public class Bookings {
     private int bookingID;
     private int customerID;
     private int roomNumber;
@@ -9,7 +9,7 @@ public class Booking {
     private float totalCost;
 
     // Constructor
-    public Booking(int bookingID, int customerID, int roomNumber, Date checkInDate, Date checkOutDate, float totalCost) {
+    public Bookings(int bookingID, int customerID, int roomNumber, Date checkInDate, Date checkOutDate, float totalCost) {
         this.bookingID = bookingID;
         this.customerID = customerID;
         this.roomNumber = roomNumber;
@@ -72,7 +72,7 @@ public class Booking {
         // Implementation to create a booking
     }
 
-    public void modifyBooking(int bookingID, Booking newDetails) {
+    public void modifyBooking(int bookingID, Bookings newDetails) {
         // Implementation to modify a booking
     }
 

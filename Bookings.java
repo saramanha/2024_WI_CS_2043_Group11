@@ -64,19 +64,14 @@ public class Bookings {
         this.totalCost = totalCost;
     }
 
-    // Other methods
-    public void createBooking(Customer customerInfo, Room roomDetails, Date checkInDate, Date checkOutDate) {
-        // Implementation to create a booking
-    }
-
     public void modifyBooking(int bookingID, Bookings newDetails) {
         // Implementation to modify a booking
     }
 
     public float calculateCost(Room roomDetails, Date checkInDate, Date checkOutDate) {
-        // Implementation to calculate the cost of booking
-        // You may use roomDetails and date range to calculate the cost
-        return 0; // Placeholder return value
+        long diff = checkOutDate.getTime() - checkInDate.getTime();
+        long days = diff / (1000 * 60 * 60 * 24);
+        return days * roomDetails.getPrice();
     }
 
     public void registerLoyaltyMember(Customer customer) {

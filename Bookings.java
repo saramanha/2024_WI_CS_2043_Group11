@@ -8,7 +8,6 @@ public class Bookings {
     private Date checkOutDate;
     private float totalCost;
 
-    // Constructor
     public Bookings(int bookingID, int customerID, int roomNumber, Date checkInDate, Date checkOutDate, float totalCost) {
         this.bookingID = bookingID;
         this.customerID = customerID;
@@ -17,8 +16,6 @@ public class Bookings {
         this.checkOutDate = checkOutDate;
         this.totalCost = totalCost;
     }
-
-    // Getters and setters
     public int getBookingID() {
         return bookingID;
     }

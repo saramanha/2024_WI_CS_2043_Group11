@@ -71,10 +71,13 @@ public class HotelManagementSystem {
         String loyaltyMemberChoice = scanner.nextLine();
         boolean loyaltyMember = loyaltyMemberChoice.equalsIgnoreCase("Y");
 
-        // Ask if the customer has paid for the year
-        System.out.println("Has the customer paid for this year? (Y/N):");
-        String paidForYearChoice = scanner.nextLine();
-        boolean paidForYear = paidForYearChoice.equalsIgnoreCase("Y");
+        // Ask if the customer has paid for the year only if they are a loyalty member
+        boolean paidForYear = false;
+        if (loyaltyMember) {
+            System.out.println("Has the customer paid for this year? (Y/N):");
+            String paidForYearChoice = scanner.nextLine();
+            paidForYear = paidForYearChoice.equalsIgnoreCase("Y");
+        }
 
         System.out.println("Enter check-in date (YYYY-MM-DD):");
         String checkInDate = scanner.nextLine();

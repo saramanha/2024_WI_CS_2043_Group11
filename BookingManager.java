@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BookingManager {
     private static final String FILENAME = "bookings.txt";
@@ -69,41 +68,41 @@ public class BookingManager {
         }
     }
 
-    public void retrieveBookingByLastName(String lastName) {
+    public String retrieveBookingByLastName(String lastName) {
+        StringBuilder bookingDetails = new StringBuilder();
+        boolean found = false;
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
             String line;
-            boolean found = false;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
                 String[] nameParts = parts[1].split(" "); // Split the name into first name and last name
                 if (nameParts.length > 1 && nameParts[1].trim().equalsIgnoreCase(lastName.trim())) { // Check the last name
                     found = true;
-                    printBookingDetails(parts);
+                    appendBookingDetails(bookingDetails, parts);
                 }
-            }
-            if (!found) {
-                System.out.println("Booking with last name '" + lastName + "' not found.");
             }
         } catch (IOException e) {
             System.err.println("Error occurred while retrieving booking: " + e.getMessage());
         }
+        return found ? bookingDetails.toString() : null;
     }
-    private void printBookingDetails(String[] bookingParts) {
-        System.out.println("Unique ID: " + bookingParts[0]);
-        System.out.println("Name: " + bookingParts[1]);
-        System.out.println("Email: " + bookingParts[2]);
-        System.out.println("Phone: " + bookingParts[3]);
-        System.out.println("Room Number: " + bookingParts[4]);
-        System.out.println("Room Type: " + bookingParts[5]);
-        System.out.println("Number of People: " + bookingParts[6]);
-        System.out.println("Food Accommodation: " + bookingParts[7]);
-        System.out.println("Check-in Date: " + bookingParts[8]);
-        System.out.println("Check-out Date: " + bookingParts[9]);
-        System.out.println("Transportation Included: " + bookingParts[10]);
-        System.out.println("Movies & Extra Channels Included: " + bookingParts[11]);
-        System.out.println("Loyalty Member: " + bookingParts[12]);
-        System.out.println("Paid for Year: " + bookingParts[13]);
-        System.out.println("Total Cost: $" + bookingParts[14]);
+
+    private void appendBookingDetails(StringBuilder bookingDetails, String[] bookingParts) {
+        bookingDetails.append("Unique ID: ").append(bookingParts[0]).append("\n");
+        bookingDetails.append("Name: ").append(bookingParts[1]).append("\n");
+        bookingDetails.append("Email: ").append(bookingParts[2]).append("\n");
+        bookingDetails.append("Phone: ").append(bookingParts[3]).append("\n");
+        bookingDetails.append("Room Number: ").append(bookingParts[4]).append("\n");
+        bookingDetails.append("Room Type: ").append(bookingParts[5]).append("\n");
+        bookingDetails.append("Number of People: ").append(bookingParts[6]).append("\n");
+        bookingDetails.append("Food Accommodation: ").append(bookingParts[7]).append("\n");
+        bookingDetails.append("Check-in Date: ").append(bookingParts[8]).append("\n");
+        bookingDetails.append("Check-out Date: ").append(bookingParts[9]).append("\n");
+        bookingDetails.append("Transportation Included: ").append(bookingParts[10]).append("\n");
+        bookingDetails.append("Movies & Extra Channels Included: ").append(bookingParts[11]).append("\n");
+        bookingDetails.append("Loyalty Member: ").append(bookingParts[12]).append("\n");
+        bookingDetails.append("Paid for Year: ").append(bookingParts[13]).append("\n");
+        bookingDetails.append("Total Cost: $").append(bookingParts[14]).append("\n\n");
     }
 
     private double calculateTotalCost(RoomType roomType, FoodAccommodation foodAccommodation, long numOfNights,

@@ -115,61 +115,45 @@ public class HotelManagementSystemGUI extends JFrame implements ActionListener {
         RoomType roomType = (RoomType) roomTypeComboBox.getSelectedItem();
         int numPeople = 1; // Assuming default
         FoodAccommodation foodAccommodation = (FoodAccommodation) foodAccommodationComboBox.getSelectedItem();
+        String checkInDate = checkInDateField.getText();
+        String checkOutDate = checkOutDateField.getText();
         boolean moviesAndChannels = moviesAndChannelsCheckBox.isSelected();
         boolean transportation = transportationCheckBox.isSelected();
         boolean loyaltyMember = loyaltyMemberCheckBox.isSelected();
         boolean paidForYear = paidForYearCheckBox.isSelected();
-        String checkInDate = checkInDateField.getText();
-        String checkOutDate = checkOutDateField.getText();
 
-        bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation, checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear);
-
-        // Update output area with booking details
-        outputArea.append("Booking added successfully.\n");
-        outputArea.append("Name: " + name + "\n");
-        outputArea.append("Email: " + email + "\n");
-        outputArea.append("Phone: " + phone + "\n");
-        outputArea.append("Room Number: " + roomNumber + "\n");
-        outputArea.append("Room Type: " + roomType + "\n");
-        outputArea.append("Food Accommodation: " + foodAccommodation + "\n");
-        outputArea.append("Check-in Date: " + checkInDate + "\n");
-        outputArea.append("Check-out Date: " + checkOutDate + "\n");
-        outputArea.append("Transportation Included: " + transportation + "\n");
-        outputArea.append("Movies & Extra Channels Included: " + moviesAndChannels + "\n");
-        outputArea.append("Loyalty Member: " + loyaltyMember + "\n");
-        outputArea.append("Paid for Year: " + paidForYear + "\n");
-        outputArea.append("\n");
+        bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation,
+                checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear);
     }
 
     private void removeBooking() {
-        try {
-            int uniqueId = Integer.parseInt(JOptionPane.showInputDialog("Enter the unique ID of the booking you want to remove:"));
-            bookingManager.removeBooking(uniqueId);
-            outputArea.append("Booking with ID " + uniqueId + " removed successfully.\n\n");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid unique ID.");
-        }
+        int uniqueId = Integer.parseInt(JOptionPane.showInputDialog("Enter the unique ID of the booking you want to remove:"));
+        bookingManager.removeBooking(uniqueId);
     }
 
     private void modifyBooking() {
-        try {
-            int uniqueId = Integer.parseInt(JOptionPane.showInputDialog("Enter the unique ID of the booking you want to modify:"));
-            bookingManager.removeBooking(uniqueId);
-            addBooking();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid unique ID.");
-        }
+        int uniqueId = Integer.parseInt(JOptionPane.showInputDialog("Enter the unique ID of the booking you want to modify:"));
+        bookingManager.removeBooking(uniqueId);
+        addBooking();
     }
 
     private void retrieveBooking() {
         String lastName = JOptionPane.showInputDialog("Enter the last name to retrieve bookings:");
-        bookingManager.retrieveBookingByLastName(lastName);
+        String bookingDetails = bookingManager.retrieveBookingByLastName(lastName);
+
+        if (bookingDetails != null) {
+            JOptionPane.showMessageDialog(this, bookingDetails, "Booking Details", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Booking with last name '" + lastName + "' not found.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HotelManagementSystemGUI gui = new HotelManagementSystemGUI();
-            gui.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new HotelManagementSystemGUI().setVisible(true);
+            }
         });
     }
 }

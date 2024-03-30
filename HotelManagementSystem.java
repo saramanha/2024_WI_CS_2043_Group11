@@ -90,6 +90,7 @@ public class HotelManagementSystem {
     private static void modifyBooking(Scanner scanner, BookingManager bookingManager) {
         System.out.println("Enter the unique ID of the booking you want to modify:");
         int uniqueId = scanner.nextInt();
+        bookingManager.removeBooking(uniqueId);
         scanner.nextLine(); // Consume newline
         // Assuming you want to modify all details
         addBooking(scanner, bookingManager);

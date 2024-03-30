@@ -1,10 +1,12 @@
 import java.util.Scanner;
 
 public class HotelManagementSystem {
-    public static void main(String[] args) {
-        BookingManager bookingManager = new BookingManager();
-        Scanner scanner = new Scanner(System.in);
+    private static RoomInventoryManager roomInventoryManager = new RoomInventoryManager();
+    private static BookingManager bookingManager = new BookingManager();
+    private static Scanner scanner = new Scanner(System.in);
 
+    public static void main(String[] args) {
+        roomInventoryManager.initializeRoomInventory(scanner);
         boolean running = true;
         while (running) {
             System.out.println("Choose an operation:");
@@ -12,11 +14,11 @@ public class HotelManagementSystem {
             System.out.println("2. Modify a booking");
             System.out.println("3. Remove a booking");
             System.out.println("4. Retrieve a booking by last name");
-            System.out.println("5. Exit");
+            System.out.println("5. Display available rooms");
+            System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
+            scanner.nextLine();
             switch (choice) {
                 case 1:
                     addBooking(scanner, bookingManager);
@@ -31,81 +33,91 @@ public class HotelManagementSystem {
                     retrieveBookingByLastName(scanner, bookingManager);
                     break;
                 case 5:
+                    roomInventoryManager.displayAvailableRooms();
+                    break;
+                case 6:
                     running = false;
                     System.out.println("Exiting program.");
                     break;
                 default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 5.");
+                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
             }
         }
     }
 
     private static void addBooking(Scanner scanner, BookingManager bookingManager) {
-        System.out.println("Enter name:");
+        System.out.println("Enter booking details:");
+
+        System.out.print("Name: ");
         String name = scanner.nextLine();
-        System.out.println("Enter email:");
+
+        System.out.print("Email: ");
         String email = scanner.nextLine();
-        System.out.println("Enter phone:");
+
+        System.out.print("Phone: ");
         String phone = scanner.nextLine();
-        System.out.println("Enter room number:");
+
+        System.out.print("Room Number: ");
         int roomNumber = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
+
         System.out.println("Enter room type (1 - Single Room, 2 - Regular Suite, 3 - Connecting Room, 4 - Deluxe Suite, 5 - VIP Suite):");
-        int roomTypeChoice = scanner.nextInt();
-        RoomType roomType = RoomType.values()[roomTypeChoice - 1];
-        scanner.nextLine(); // Consume newline
-        System.out.println("Enter number of people:");
+        int roomTypeIndex = scanner.nextInt();
+        RoomType roomType = RoomType.values()[roomTypeIndex - 1];
+        scanner.nextLine(); 
+
+        System.out.print("Number of People: ");
         int numPeople = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        System.out.println("Enter food accommodation (1 - Breakfast, 2 - Breakfast & Lunch, 3 - Breakfast, Lunch, Dinner & Bar):");
-        int foodAccommodationChoice = scanner.nextInt();
-        FoodAccommodation foodAccommodation = FoodAccommodation.values()[foodAccommodationChoice - 1];
-        scanner.nextLine(); // Consume newline
-        System.out.println("Do you want movies & extra channels? (Y/N): ");
-        String moviesAndChannelsChoice = scanner.nextLine();
-        boolean moviesAndChannels = moviesAndChannelsChoice.equalsIgnoreCase("Y");
-        System.out.println("Do you need transportation? (Y/N): ");
-        String transportationChoice = scanner.nextLine();
-        boolean transportation = transportationChoice.equalsIgnoreCase("Y");
-        System.out.println("Is the customer a loyalty member? (Y/N):");
-        String loyaltyMemberChoice = scanner.nextLine();
-        boolean loyaltyMember = loyaltyMemberChoice.equalsIgnoreCase("Y");
+        scanner.nextLine(); 
 
-        // Ask if the customer has paid for the year only if they are a loyalty member
-        boolean paidForYear = false;
-        if (loyaltyMember) {
-            System.out.println("Has the customer paid for this year? (Y/N):");
-            String paidForYearChoice = scanner.nextLine();
-            paidForYear = paidForYearChoice.equalsIgnoreCase("Y");
-        }
+        System.out.print("Enter food accommodation (1 - Breakfast, 2 - Breakfast & Lunch, 3 - Breakfast, Lunch, Dinner & Bar):");
+        int foodAccommodationIndex = scanner.nextInt();
+        FoodAccommodation foodAccommodation = FoodAccommodation.values()[foodAccommodationIndex - 1];
+        scanner.nextLine(); 
 
-        System.out.println("Enter check-in date (YYYY-MM-DD):");
+        System.out.print("Check-In Date (YYYY-MM-DD): ");
         String checkInDate = scanner.nextLine();
-        System.out.println("Enter check-out date (YYYY-MM-DD):");
+
+        System.out.print("Check-Out Date (YYYY-MM-DD): ");
         String checkOutDate = scanner.nextLine();
 
-        bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation, checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear);
+        System.out.print("Transportation needed (true/false): ");
+        boolean transportation = scanner.nextBoolean();
+
+        System.out.print("Movies and Channels access (true/false): ");
+        boolean moviesAndChannels = scanner.nextBoolean();
+
+        System.out.print("Loyalty Member (true/false): ");
+        boolean loyaltyMember = scanner.nextBoolean();
+
+        System.out.print("Paid for Year (true/false): ");
+        boolean paidForYear = scanner.nextBoolean();
+        scanner.nextLine(); 
+
+        bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation, checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear, roomInventoryManager);
+    }
+
+    private static void removeBooking(Scanner scanner, BookingManager bookingManager) {
+        System.out.println("Enter booking ID to remove:");
+        int bookingId = scanner.nextInt();
+        scanner.nextLine(); 
+
+        bookingManager.removeBooking(bookingId);
+        System.out.println("Booking removed successfully for ID: " + bookingId);
     }
 
     private static void modifyBooking(Scanner scanner, BookingManager bookingManager) {
         System.out.println("Enter the unique ID of the booking you want to modify:");
         int uniqueId = scanner.nextInt();
-        bookingManager.removeBooking(uniqueId);
-        scanner.nextLine(); // Consume newline
-        // Assuming you want to modify all details
-        addBooking(scanner, bookingManager);
-    }
-
-    private static void removeBooking(Scanner scanner, BookingManager bookingManager) {
-        System.out.println("Enter the unique ID of the booking you want to remove:");
-        int uniqueId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        bookingManager.removeBooking(uniqueId);
+        scanner.nextLine(); 
+        bookingManager.modifyBooking(uniqueId, scanner);
     }
 
     private static void retrieveBookingByLastName(Scanner scanner, BookingManager bookingManager) {
-        System.out.println("Enter the last name to retrieve bookings:");
+        System.out.println("Enter last name for booking retrieval:");
         String lastName = scanner.nextLine();
+
         bookingManager.retrieveBookingByLastName(lastName);
     }
+    
 }

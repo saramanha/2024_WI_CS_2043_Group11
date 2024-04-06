@@ -14,85 +14,93 @@ public class HotelManagementSystemGUI extends JFrame implements ActionListener {
 
     public HotelManagementSystemGUI() {
         bookingManager = new BookingManager();
-
+    
         setTitle("Hotel Management System");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(0, 2, 10, 10));
-
+    
         mainPanel.add(new JLabel("Name:"));
         nameField = new JTextField();
         mainPanel.add(nameField);
-
+    
         mainPanel.add(new JLabel("Email:"));
         emailField = new JTextField();
         mainPanel.add(emailField);
-
+    
         mainPanel.add(new JLabel("Phone:"));
         phoneField = new JTextField();
         mainPanel.add(phoneField);
-
+    
         mainPanel.add(new JLabel("Room Number:"));
         roomNumberField = new JTextField();
         mainPanel.add(roomNumberField);
-
+    
         mainPanel.add(new JLabel("Room Type:"));
         roomTypeComboBox = new JComboBox<>(RoomType.values());
         mainPanel.add(roomTypeComboBox);
-
+    
         mainPanel.add(new JLabel("Food Accommodation:"));
         foodAccommodationComboBox = new JComboBox<>(FoodAccommodation.values());
         mainPanel.add(foodAccommodationComboBox);
-
+    
         mainPanel.add(new JLabel("Movies & Extra Channels:"));
         moviesAndChannelsCheckBox = new JCheckBox();
         mainPanel.add(moviesAndChannelsCheckBox);
-
+    
         mainPanel.add(new JLabel("Transportation:"));
         transportationCheckBox = new JCheckBox();
         mainPanel.add(transportationCheckBox);
-
+    
         mainPanel.add(new JLabel("Loyalty Member:"));
         loyaltyMemberCheckBox = new JCheckBox();
         mainPanel.add(loyaltyMemberCheckBox);
-
+    
         mainPanel.add(new JLabel("Paid for Year:"));
         paidForYearCheckBox = new JCheckBox();
         mainPanel.add(paidForYearCheckBox);
-
+    
         mainPanel.add(new JLabel("Check-in Date (YYYY-MM-DD):"));
         checkInDateField = new JTextField();
         mainPanel.add(checkInDateField);
-
+    
         mainPanel.add(new JLabel("Check-out Date (YYYY-MM-DD):"));
         checkOutDateField = new JTextField();
         mainPanel.add(checkOutDateField);
-
+    
         JButton addBookingButton = new JButton("Add Booking");
         addBookingButton.addActionListener(this);
         mainPanel.add(addBookingButton);
-
+    
         JButton removeBookingButton = new JButton("Remove Booking");
         removeBookingButton.addActionListener(this);
         mainPanel.add(removeBookingButton);
-
+    
         JButton modifyBookingButton = new JButton("Modify Booking");
         modifyBookingButton.addActionListener(this);
         mainPanel.add(modifyBookingButton);
-
+    
         JButton retrieveBookingButton = new JButton("Retrieve Booking");
         retrieveBookingButton.addActionListener(this);
         mainPanel.add(retrieveBookingButton);
-
+    
+        JButton manageMembershipsButton = new JButton("Manage Memberships");
+        manageMembershipsButton.addActionListener(e -> {
+            MembershipManagementWindow window = new MembershipManagementWindow();
+            window.setVisible(true);
+        });
+        mainPanel.add(manageMembershipsButton);
+    
         outputArea = new JTextArea();
         outputArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(outputArea);
         mainPanel.add(scrollPane);
-
+    
         getContentPane().add(mainPanel);
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {

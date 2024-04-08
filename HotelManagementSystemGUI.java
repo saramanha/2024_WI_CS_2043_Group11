@@ -11,6 +11,8 @@ public class HotelManagementSystemGUI extends JFrame implements ActionListener {
     private JComboBox<FoodAccommodation> foodAccommodationComboBox;
     private JCheckBox moviesAndChannelsCheckBox, transportationCheckBox, loyaltyMemberCheckBox, paidForYearCheckBox;
     private JTextArea outputArea;
+    private JTextField numPeopleField;
+
 
     public HotelManagementSystemGUI() {
         bookingManager = new BookingManager();
@@ -61,7 +63,11 @@ public class HotelManagementSystemGUI extends JFrame implements ActionListener {
         mainPanel.add(new JLabel("Paid for Year:"));
         paidForYearCheckBox = new JCheckBox();
         mainPanel.add(paidForYearCheckBox);
-    
+        
+        mainPanel.add(new JLabel("Number of People:"));
+        numPeopleField = new JTextField();
+        mainPanel.add(numPeopleField);
+
         mainPanel.add(new JLabel("Check-in Date (YYYY-MM-DD):"));
         checkInDateField = new JTextField();
         mainPanel.add(checkInDateField);
@@ -116,23 +122,32 @@ public class HotelManagementSystemGUI extends JFrame implements ActionListener {
     }
 
     private void addBooking() {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String phone = phoneField.getText();
-        int roomNumber = Integer.parseInt(roomNumberField.getText());
-        RoomType roomType = (RoomType) roomTypeComboBox.getSelectedItem();
-        int numPeople = 1; // Assuming default
-        FoodAccommodation foodAccommodation = (FoodAccommodation) foodAccommodationComboBox.getSelectedItem();
-        String checkInDate = checkInDateField.getText();
-        String checkOutDate = checkOutDateField.getText();
-        boolean moviesAndChannels = moviesAndChannelsCheckBox.isSelected();
-        boolean transportation = transportationCheckBox.isSelected();
-        boolean loyaltyMember = loyaltyMemberCheckBox.isSelected();
-        boolean paidForYear = paidForYearCheckBox.isSelected();
-
-        bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation,
-                checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear);
+        try {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String phone = phoneField.getText();
+            int roomNumber = Integer.parseInt(roomNumberField.getText());
+            RoomType roomType = (RoomType) roomTypeComboBox.getSelectedItem();
+            int numPeople = Integer.parseInt(numPeopleField.getText()); // Parse the integer
+            FoodAccommodation foodAccommodation = (FoodAccommodation) foodAccommodationComboBox.getSelectedItem();
+            String checkInDate = checkInDateField.getText();
+            String checkOutDate = checkOutDateField.getText();
+            boolean transportation = transportationCheckBox.isSelected();
+            boolean moviesAndChannels = moviesAndChannelsCheckBox.isSelected();
+            boolean loyaltyMember = loyaltyMemberCheckBox.isSelected();
+            boolean paidForYear = paidForYearCheckBox.isSelected();
+    
+            // Call addBooking without expecting a return value
+            bookingManager.addBooking(name, email, phone, roomNumber, roomType, numPeople, foodAccommodation, checkInDate, checkOutDate, transportation, moviesAndChannels, loyaltyMember, paidForYear);
+    
+            // Update the output area directly since there's no success indicator
+            outputArea.setText("Booking added successfully. Please check the console for total cost.");
+        } catch (NumberFormatException e) {
+            outputArea.setText("Please ensure room number and number of people are valid integers.");
+        }
     }
+    
+    
 
     private void removeBooking() {
         int uniqueId = Integer.parseInt(JOptionPane.showInputDialog("Enter the unique ID of the booking you want to remove:"));

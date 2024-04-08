@@ -71,20 +71,19 @@ public class MembershipManagementWindow extends JFrame {
         }
     }
     private void checkStatus() {
-      String status = Member.checkStatus(uniqueIdField.getText());
-      if (status != null) {
-          String[] details = status.split(",");
-          boolean hasPaid = Boolean.parseBoolean(details[3]);
-          String paymentStatusMessage = hasPaid ? "has paid for the year." : "has not paid for the year.";
-          
-          // Display a more user-friendly message
-          JOptionPane.showMessageDialog(this, "Member found: " + details[1] + " (" + details[2] + ") " + paymentStatusMessage, "Member Status", JOptionPane.INFORMATION_MESSAGE);
-          
-          // Optionally, set the checkbox to reflect the current payment status
-          hasPaidCheckBox.setSelected(hasPaid);
-      } else {
-          JOptionPane.showMessageDialog(this, "Member not found.", "Member Status", JOptionPane.ERROR_MESSAGE);
-      }
-  }
+        String status = Member.getMemberDetailsByName(nameField.getText());
+        if (status != null) {
+            String[] details = status.split(",");
+            boolean hasPaid = Boolean.parseBoolean(details[3]);
+            String paymentStatusMessage = hasPaid ? "has paid for the year." : "has not paid for the year.";
+            
+            JOptionPane.showMessageDialog(this, "Member found: " + details[1] + " (" + details[2] + ") " + paymentStatusMessage, "Member Status", JOptionPane.INFORMATION_MESSAGE);
+            hasPaidCheckBox.setSelected(hasPaid);
+        } else {
+            JOptionPane.showMessageDialog(this, "Member not found.", "Member Status", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+  
   
 }

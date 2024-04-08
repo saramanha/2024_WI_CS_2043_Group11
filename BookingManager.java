@@ -140,10 +140,14 @@ public class BookingManager {
             case BREAKFAST_LUNCH_DINNER_BAR:
                 foodPricePerNight = 70;
                 break;
+            case NOTHING: // Explicit handling for clarity
+                foodPricePerNight = 0;
+                break;
             default:
                 foodPricePerNight = 0;
                 break;
         }
+        
 
         double additionalAccommodationCost = 0;
         if (moviesAndChannels) {

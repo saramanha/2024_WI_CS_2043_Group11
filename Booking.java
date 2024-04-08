@@ -9,8 +9,10 @@ enum RoomType {
 enum FoodAccommodation {
     BREAKFAST,
     BREAKFAST_AND_LUNCH,
-    BREAKFAST_LUNCH_DINNER_BAR
+    BREAKFAST_LUNCH_DINNER_BAR,
+    NOTHING 
 }
+
 
 public class Booking {
     private int uniqueId;

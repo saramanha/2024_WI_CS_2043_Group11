@@ -113,5 +113,21 @@ public class Member {
 
     return true;
 }
+public static String getMemberDetailsByName(String name) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(MEMBERS_FILE))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] details = line.split(",");
+            // Assuming name is the second element in the line
+            if (details[1].equalsIgnoreCase(name.trim())) {
+                return line; // Found the member with matching name
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return null; // Member not found
+}
+
 
 }
